@@ -1,23 +1,19 @@
 import { format } from "json-schema-to-typescript/dist/src/formatter";
 import { DEFAULT_OPTIONS } from "json-schema-to-typescript";
 import url from "url";
-// import chalk from "chalk";
-// import * as ora from "ora";
 
-import { createBaseRequestStr } from "./base-creator";
+import { createBaseRequestStr } from "./core/base-creator";
 import {
   creatHeadHelpStr,
   getInterfaces,
   getIntfWithModelName,
   uniqueItfs,
-} from "./tools";
-import { Intf, IUrlMapper, RAPPER_TYPE } from "./types";
+} from "./core/tools";
+import { Intf, IUrlMapper, TRAILING_COMMA } from "./types";
 import { getMd5, writeFile } from "./utils";
 import * as packageJson from "../package.json"
 
 export interface IRapper {
-  /** 必填，redux、normal 等 */
-  type: RAPPER_TYPE;
   /** 必填，api仓库地址，从仓库的数据按钮可以获得 */
   apiUrl: string;
   /** 选填，rap平台前端地址，默认是 http://rap2.taobao.org */
@@ -33,31 +29,32 @@ export interface IRapper {
 }
 
 async function rapper({
-  type = "normal",
   rapUrl = "http://rap2.duomai.cn",
-  apiUrl = "http://rap2.duomai.cn:38080/repository/get?id=32&token=9EkIocIKn1AUXzKC1zUANOEBRyqmbMWl",
+  apiUrl = "http://rap2.duomai.cn",
   rapperPath = "./src/rapper",
   urlMapper = (t) => t,
+  codeStyle,
   resSelector = "type ResSelector<T> = T",
 }: IRapper) {
   const rapperVersion: string = packageJson.version;
   // console.log(`当前rapper版本: ${chalk.grey(rapperVersion)}`);
   // const spinner = ora(chalk.grey("rapper: 开始检查版本"));
-  /** 参数校验 */
-  if (!type) {
-    // return new Promise(() =>
-    // spinner.fail(chalk.red("rapper: 请配置 type 参数"))
-    // );
-  } else if (!["normal", "redux"].includes(type)) {
-    // return new Promise(() =>
-    // spinner.fail(chalk.red("rapper: type 参数配置错误，请重新配置"))
-    // );
-  }
   const apiParams = url.parse(apiUrl, true).query;
 
   const projectId = parseInt(
     Array.isArray(apiParams.id) ? apiParams.id[0] : apiParams.id
   );
+
+  // 格式化配置
+  DEFAULT_OPTIONS.style = {
+    ...DEFAULT_OPTIONS.style,
+    singleQuote: true,
+    semi: false,
+    trailingComma: TRAILING_COMMA.ES5,
+  };
+  if (codeStyle && typeof codeStyle === 'object') {
+    DEFAULT_OPTIONS.style = { ...codeStyle };
+  }
 
   /** 输出文件集合 */
   let outputFiles = [];

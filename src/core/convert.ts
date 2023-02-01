@@ -1,6 +1,6 @@
 import { JSONSchema4 } from 'json-schema';
 import { compile, DEFAULT_OPTIONS, Options } from 'json-schema-to-typescript';
-import { Interface } from './types';
+import { Interface } from '../types';
 import * as JSON5 from 'json5';
 import * as _ from 'lodash';
 

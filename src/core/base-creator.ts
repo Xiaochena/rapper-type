@@ -1,6 +1,6 @@
 // import chalk from "chalk";
 
-import { ICreatorExtr, Intf } from "./types";
+import { ICreatorExtr, Intf } from "../types";
 import convert from "./convert";
 import { creatInterfaceHelpStr } from "./tools";
 

@@ -1,7 +1,7 @@
 {
   "version": "0.0.1-experimental.0",
   "scripts": {
-    "build": "ts-node ./src/test.ts"
+    "test": "ts-node ./src/test.ts"
   },
   "dependencies": {
     "@types/json-schema": "^7.0.11",

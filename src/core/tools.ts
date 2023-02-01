@@ -1,7 +1,7 @@
 import axios from "axios";
 // import chalk from "chalk";
 import _ from "lodash";
-import { ICollaborator, IModules, Interface, Intf, IUrlMapper } from "./types";
+import { ICollaborator, IModules, Interface, Intf, IUrlMapper } from "../types";
 
 function updateURLParameter(url: string, param: string, paramVal: string) {
   let newAdditionalURL = "";
