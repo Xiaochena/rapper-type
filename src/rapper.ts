@@ -11,7 +11,7 @@ import {
 } from "./core/tools";
 import { Intf, IUrlMapper, TRAILING_COMMA } from "./types";
 import { getMd5, writeFile } from "./utils";
-import * as packageJson from "../package.json"
+const packageJson = require("../package.json");
 
 export interface IRapper {
   /** 必填，api仓库地址，从仓库的数据按钮可以获得 */
@@ -52,7 +52,7 @@ async function rapper({
     semi: false,
     trailingComma: TRAILING_COMMA.ES5,
   };
-  if (codeStyle && typeof codeStyle === 'object') {
+  if (codeStyle && typeof codeStyle === "object") {
     DEFAULT_OPTIONS.style = { ...codeStyle };
   }
 
@@ -89,7 +89,7 @@ async function rapper({
     Promise.all(
       outputFiles.map(({ path, content }) => writeFile(path, content))
     );
-  } catch (error) { }
+  } catch (error) {}
 }
 
 export default rapper;
